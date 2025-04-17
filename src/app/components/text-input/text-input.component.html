@@ -1,0 +1,15 @@
+<div class="text-input-container">
+  <h2>Text to Speech Input</h2>
+  <textarea 
+    [(ngModel)]="inputText" 
+    placeholder="Type your text here..." 
+    rows="5" 
+    class="text-input"
+  ></textarea>
+  <button 
+    (click)="onSubmit()" 
+    class="synthesize-button"
+  >
+    Synthesize Speech
+  </button>
+</div>

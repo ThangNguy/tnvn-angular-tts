@@ -1,0 +1,60 @@
+<div class="app-container">
+  <app-header></app-header>
+  <div class="main-content">
+    <div class="tts-container">
+      <div class="tts-header">
+        <h1>{{ title }}</h1>
+        <p class="subtitle">Chuyển đổi văn bản thành giọng nói</p>
+      </div>
+
+      <div class="tts-main">
+        <div class="tts-input-area">
+          <textarea 
+            [(ngModel)]="text" 
+            placeholder="Nhập văn bản bạn muốn chuyển thành giọng nói..."
+            rows="6"
+          ></textarea>
+        </div>
+
+        <div class="tts-controls">
+          <div class="control-group">
+            <label>Giọng đọc:</label>
+            <select [(ngModel)]="selectedVoice">
+              <option *ngFor="let voice of voiceOptions" [ngValue]="voice">
+                {{voice.name}} ({{voice.lang}})
+              </option>
+            </select>
+          </div>
+          
+          <div class="control-group">
+            <label>Tốc độ: {{rate.toFixed(1)}}</label>
+            <input type="range" min="0.5" max="2" step="0.1" [(ngModel)]="rate">
+          </div>
+          
+          <div class="control-group">
+            <label>Cao độ: {{pitch.toFixed(1)}}</label>
+            <input type="range" min="0.5" max="2" step="0.1" [(ngModel)]="pitch">
+          </div>
+          
+          <div class="control-group">
+            <label>Âm lượng: {{volume.toFixed(1)}}</label>
+            <input type="range" min="0" max="1" step="0.1" [(ngModel)]="volume">
+          </div>
+          
+          <div class="button-group">
+            <button class="btn-speak" [disabled]="!text || isSpeaking" (click)="speak()">
+              <i class="fas fa-play"></i> Phát
+            </button>
+            <button class="btn-stop" [disabled]="!isSpeaking" (click)="stop()">
+              <i class="fas fa-stop"></i> Dừng
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="tts-footer">
+        <p>Sử dụng Web Speech API để chuyển đổi văn bản thành giọng nói</p>
+      </div>
+    </div>
+  </div>
+</div>
