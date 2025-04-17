@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .audio-player {
   display: flex;
   flex-direction: column;
@@ -86,7 +88,7 @@
         color: white;
         
         &:hover:not(:disabled) {
-          background-color: darken(#2ecc71, 10%);
+          background-color: color.adjust(#2ecc71, $lightness: -10%);
         }
       }
       
@@ -95,7 +97,7 @@
         color: white;
         
         &:hover {
-          background-color: darken(#3498db, 10%);
+          background-color: color.adjust(#3498db, $lightness: -10%);
         }
       }
       
@@ -104,7 +106,7 @@
         color: white;
         
         &:hover:not(:disabled) {
-          background-color: darken(#e74c3c, 10%);
+          background-color: color.adjust(#e74c3c, $lightness: -10%);
         }
       }
       
@@ -113,7 +115,7 @@
         color: white;
         
         &:hover:not(:disabled) {
-          background-color: darken(#8e44ad, 10%);
+          background-color: color.adjust(#8e44ad, $lightness: -10%);
         }
       }
       

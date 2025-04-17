@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .text-input-container {
   background-color: var(--light-bg);
   border-radius: 8px;
@@ -63,7 +65,7 @@
     gap: var(--spacing-sm);
     
     &:hover:not(:disabled) {
-      background-color: darken(#2ecc71, 10%);
+      background-color: color.adjust(#2ecc71, $lightness: -10%);
     }
     
     &:disabled {
