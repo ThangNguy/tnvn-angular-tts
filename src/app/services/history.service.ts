@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { SpeechHistory } from '../models/speech-history.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HistoryService {
-  private history: SpeechHistory[] = [];
+  private _history = signal<SpeechHistory[]>([]);
 
   addToHistory(entry: SpeechHistory): void {
-    this.history.push(entry);
+    this._history.update(history => [...history, entry]);
   }
 
-  getHistory(): SpeechHistory[] {
-    return this.history;
+  getHistory() {
+    return this._history.asReadonly();
   }
 
   clearHistory(): void {
-    this.history = [];
+    this._history.set([]);
   }
 }

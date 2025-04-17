@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+
+interface Voice {
+  name: string;
+  code: string;
+}
 
 @Component({
   selector: 'app-voice-controls',
@@ -6,37 +11,38 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./voice-controls.component.scss'],
   standalone: false,
 })
-export class VoiceControlsComponent {
+export class VoiceControlsComponent implements OnInit {
   @Output() voiceSelected = new EventEmitter<string>();
-  @Output() playbackControl = new EventEmitter<string>();
 
-  voices = [
+  voices: Voice[] = [
+    { name: 'Vietnamese - Female', code: 'vi-VN-Female' },
+    { name: 'Vietnamese - Male', code: 'vi-VN-Male' },
     { name: 'English (US) - Female', code: 'en-US-Female' },
     { name: 'English (US) - Male', code: 'en-US-Male' },
-    { name: 'Spanish (US) - Female', code: 'es-US-Female' },
-    { name: 'Spanish (US) - Male', code: 'es-US-Male' }
+    { name: 'Japanese - Female', code: 'ja-JP-Female' },
+    { name: 'Japanese - Male', code: 'ja-JP-Male' }
   ];
 
-  selectedVoice: string = this.voices[0].code;
+  selectedVoice: string = '';
 
-  selectVoice(voiceCode: string) {
-    this.selectedVoice = voiceCode;
+  ngOnInit(): void {
+    this.selectedVoice = this.voices[0].code;
+    this.emitVoiceSelection();
+  }
+
+  selectVoice(voiceCode: string): void {
+    if (this.selectedVoice !== voiceCode) {
+      this.selectedVoice = voiceCode;
+      this.emitVoiceSelection();
+    }
+  }
+
+  onVoiceChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.selectVoice(select.value);
+  }
+
+  private emitVoiceSelection(): void {
     this.voiceSelected.emit(this.selectedVoice);
-  }
-
-  play() {
-    this.playbackControl.emit('play');
-  }
-
-  pause() {
-    this.playbackControl.emit('pause');
-  }
-
-  stop() {
-    this.playbackControl.emit('stop');
-  }
-
-  onVoiceChange() {
-    
   }
 }

@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TtsService } from './services/tts.service';
+import { HistoryService } from './services/history.service';
+import { SpeechConfig, DEFAULT_SPEECH_CONFIG } from './models/speech-config.model';
+import { createSpeechHistory } from './models/speech-history.model';
 
 @Component({
   selector: 'app-root',
@@ -6,56 +10,92 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   standalone: false
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Text to Speech App';
-  text = '';
-  isSpeaking = false;
-  voiceOptions: SpeechSynthesisVoice[] = [];
-  selectedVoice: SpeechSynthesisVoice | null = null;
-  pitch = 1;
-  rate = 1;
-  volume = 1;
-
-  ngOnInit() {
-    if ('speechSynthesis' in window) {
-      this.loadVoices();
-      // Chrome loads voices asynchronously
-      window.speechSynthesis.onvoiceschanged = () => {
-        this.loadVoices();
+  
+  // Trạng thái cho TTS
+  currentText: string = '';
+  isProcessing: boolean = false;
+  audioSource: string | null = null;
+  
+  // Cấu hình cho TTS
+  speechConfig: SpeechConfig = { ...DEFAULT_SPEECH_CONFIG };
+  
+  constructor(
+    private _ttsService: TtsService,
+    private _historyService: HistoryService
+  ) {}
+  
+  ngOnInit(): void {
+    // Khởi tạo với cấu hình mặc định
+  }
+  
+  /**
+   * Xử lý khi text được nhập từ component con
+   */
+  onTextSubmitted(text: string): void {
+    this.currentText = text;
+    this.synthesizeSpeech();
+  }
+  
+  /**
+   * Xử lý khi voice được chọn từ component con
+   */
+  onVoiceSelected(voiceCode: string): void {
+    // Phân tích voiceCode để lấy languageCode và ssmlGender
+    const parts = voiceCode.split('-');
+    
+    // Format dự kiến là: 'vi-VN-Female' hoặc 'en-US-Male'
+    if (parts.length >= 3) {
+      // Lấy phần cuối cùng là gender
+      const gender = parts[parts.length - 1];
+      // Ghép các phần còn lại để tạo languageCode đầy đủ (ví dụ: vi-VN)
+      const languageCode = parts.slice(0, parts.length - 1).join('-');
+      
+      this.speechConfig = {
+        ...this.speechConfig,
+        languageCode,
+        ssmlGender: gender.toUpperCase() as 'MALE' | 'FEMALE' | 'NEUTRAL'
       };
+      
+      console.log('Voice selected:', { languageCode, gender: gender.toUpperCase() });
+    } else {
+      console.error('Invalid voice code format:', voiceCode);
     }
   }
-
-  loadVoices() {
-    this.voiceOptions = window.speechSynthesis.getVoices();
-    if (this.voiceOptions.length > 0) {
-      this.selectedVoice = this.voiceOptions[0];
-    }
-  }
-
-  speak() {
-    if (!this.text) return;
-    
-    this.isSpeaking = true;
-    const utterance = new SpeechSynthesisUtterance(this.text);
-    
-    if (this.selectedVoice) {
-      utterance.voice = this.selectedVoice;
+  
+  /**
+   * Gọi TtsService để chuyển đổi văn bản thành giọng nói
+   */
+  private synthesizeSpeech(): void {
+    if (!this.currentText || this.isProcessing) {
+      return;
     }
     
-    utterance.pitch = this.pitch;
-    utterance.rate = this.rate;
-    utterance.volume = this.volume;
+    this.isProcessing = true;
     
-    utterance.onend = () => {
-      this.isSpeaking = false;
-    };
-    
-    window.speechSynthesis.speak(utterance);
-  }
-
-  stop() {
-    window.speechSynthesis.cancel();
-    this.isSpeaking = false;
+    this._ttsService.synthesizeSpeech(this.currentText, this.speechConfig)
+      .subscribe({
+        next: (response) => {
+          // Chuyển đổi base64 thành URL âm thanh
+          const audioData = response.audioContent;
+          this.audioSource = `data:audio/mp3;base64,${audioData}`;
+          
+          // Thêm vào lịch sử
+          const historyEntry = createSpeechHistory(
+            this.currentText,
+            this.speechConfig.languageCode,
+            this.speechConfig.ssmlGender,
+            this.audioSource
+          );
+          this._historyService.addToHistory(historyEntry);
+          
+          this.isProcessing = false;
+        },
+        error: (error) => {
+          console.error('Lỗi khi chuyển đổi văn bản thành giọng nói:', error);
+          this.isProcessing = false;
+        }
+      });
   }
 }

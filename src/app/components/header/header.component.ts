@@ -7,12 +7,16 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class HeaderComponent {
-  title: string = 'Text-to-Speech Application';
+  title: string = 'TNVN Text-to-Speech';
 
   constructor() {}
 
-  // Method to handle user interactions can be added here
-  onHelpClick() {
-    // Logic for help button click
+  /**
+   * Xử lý sự kiện khi người dùng nhấp vào liên kết Hướng dẫn
+   */
+  onHelpClick(event: Event): void {
+    event.preventDefault();
+    // Hiển thị modal hướng dẫn hoặc chuyển hướng đến trang hướng dẫn
+    alert('Chức năng hướng dẫn sử dụng sẽ được triển khai trong phiên bản tới!');
   }
 }

@@ -8,7 +8,7 @@ import { TextInputComponent } from './components/text-input/text-input.component
 import { VoiceControlsComponent } from './components/voice-controls/voice-controls.component';
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AudioTimePipe } from './shared/pipes/audio-time.pipe';
 import { HighlightDirective } from './shared/directives/highlight.directive';
 
@@ -27,6 +27,7 @@ import { HighlightDirective } from './shared/directives/highlight.directive';
     HttpClientModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule
   ],
   providers: [],

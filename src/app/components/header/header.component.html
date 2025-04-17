@@ -1,10 +1,16 @@
-<div class="header">
-  <h1>Text-to-Speech App</h1>
-  <nav>
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/contact">Contact</a></li>
-    </ul>
-  </nav>
-</div>
+<header class="app-header">
+  <div class="header-container">
+    <div class="logo-section">
+      <h1>{{ title }}</h1>
+      <span class="subtitle">Chuyển đổi văn bản thành giọng nói dễ dàng</span>
+    </div>
+    
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/" class="active">Trang chủ</a></li>
+        <li><a href="#" (click)="onHelpClick($event)">Hướng dẫn</a></li>
+        <li><a href="https://cloud.google.com/text-to-speech" target="_blank">API Docs</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

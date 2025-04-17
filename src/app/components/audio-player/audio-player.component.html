@@ -1,15 +1,38 @@
 <div class="audio-player">
-  <h2>Audio Player</h2>
-  <audio #audioPlayer controls>
-    <source src="" type="audio/mp3">
-    Your browser does not support the audio element.
-  </audio>
-  <div class="controls">
-    <button (click)="playAudio()">Play</button>
-    <button (click)="pauseAudio()">Pause</button>
-    <button (click)="stopAudio()">Stop</button>
+  <div class="audio-info">
+    <div class="audio-duration" *ngIf="audioDuration">
+      <span class="duration-label">Thời lượng:</span>
+      <span class="duration-value">{{ audioDuration | audioTime }}</span>
+    </div>
   </div>
-  <div *ngIf="audioDuration">
-    <p>Duration: {{ audioDuration | audioTime }}</p>
+  
+  <div class="audio-element-container">
+    <audio #audioPlayer [src]="audioSrc" preload="metadata"></audio>
+    
+    <div class="controls-container">
+      <button class="control-btn play" *ngIf="!isPlaying" (click)="playAudio()" [disabled]="!audioSrc">
+        <span class="btn-icon">▶</span>
+        <span class="btn-text">Phát</span>
+      </button>
+      
+      <button class="control-btn pause" *ngIf="isPlaying" (click)="pauseAudio()">
+        <span class="btn-icon">❚❚</span>
+        <span class="btn-text">Tạm dừng</span>
+      </button>
+      
+      <button class="control-btn stop" (click)="stopAudio()" [disabled]="!isPlaying">
+        <span class="btn-icon">■</span>
+        <span class="btn-text">Dừng</span>
+      </button>
+      
+      <button class="control-btn download" (click)="downloadAudio()" [disabled]="!audioSrc">
+        <span class="btn-icon">↓</span>
+        <span class="btn-text">Tải xuống</span>
+      </button>
+    </div>
+  </div>
+  
+  <div class="audio-message" *ngIf="!audioSrc">
+    <p>Chưa có âm thanh được tạo. Vui lòng nhập văn bản và nhấn "Synthesize Speech" để tạo âm thanh.</p>
   </div>
 </div>
