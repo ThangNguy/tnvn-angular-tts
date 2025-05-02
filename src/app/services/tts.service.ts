@@ -21,7 +21,9 @@ export class TtsService {
         ssmlGender: config.ssmlGender 
       },
       audioConfig: { 
-        audioEncoding: 'MP3' 
+        audioEncoding: 'MP3',
+        // Thêm tốc độ đọc vào cấu hình audio
+        speakingRate: config.speakingRate || 1.0
       },
     };
 

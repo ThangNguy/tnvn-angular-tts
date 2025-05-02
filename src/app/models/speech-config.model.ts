@@ -13,6 +13,9 @@ export interface SpeechConfig {
   
   /** Định dạng âm thanh đầu ra */
   audioEncoding: 'MP3' | 'LINEAR16' | 'OGG_OPUS';
+
+  /** Tốc độ đọc (0.5 - 2.0), với 1.0 là tốc độ bình thường */
+  speakingRate?: number;
 }
 
 /**
@@ -21,5 +24,6 @@ export interface SpeechConfig {
 export const DEFAULT_SPEECH_CONFIG: SpeechConfig = {
   languageCode: 'vi-VN',
   ssmlGender: 'FEMALE',
-  audioEncoding: 'MP3'
+  audioEncoding: 'MP3',
+  speakingRate: 1.0
 };

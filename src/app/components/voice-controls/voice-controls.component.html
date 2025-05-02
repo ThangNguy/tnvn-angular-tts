@@ -10,5 +10,25 @@
     >
       <option *ngFor="let voice of voices" [value]="voice.code">{{ voice.name }}</option>
     </select>
+    
+    <!-- Thêm thanh trượt điều chỉnh tốc độ đọc -->
+    <div class="rate-control">
+      <label for="rateSlider">Tốc độ đọc: {{ speechRate.toFixed(1) }}x</label>
+      <input 
+        type="range" 
+        id="rateSlider" 
+        [min]="minRate" 
+        [max]="maxRate" 
+        [step]="stepRate" 
+        [ngModel]="speechRate" 
+        (input)="onRateChange($event)"
+        class="rate-slider"
+      >
+      <div class="rate-labels">
+        <span>Chậm</span>
+        <span>Bình thường</span>
+        <span>Nhanh</span>
+      </div>
+    </div>
   </div>
 </div>

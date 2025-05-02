@@ -4,6 +4,12 @@ import { HistoryService } from './services/history.service';
 import { SpeechConfig, DEFAULT_SPEECH_CONFIG } from './models/speech-config.model';
 import { createSpeechHistory } from './models/speech-history.model';
 
+// Định nghĩa interface VoiceSettings để nhận dữ liệu từ component con
+interface VoiceSettings {
+  voice: string;
+  rate: number;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -40,8 +46,12 @@ export class AppComponent implements OnInit {
   
   /**
    * Xử lý khi voice được chọn từ component con
+   * Cập nhật để nhận object VoiceSettings thay vì chỉ nhận voiceCode
    */
-  onVoiceSelected(voiceCode: string): void {
+  onVoiceSelected(settings: VoiceSettings): void {
+    const voiceCode = settings.voice;
+    const rate = settings.rate;
+    
     // Phân tích voiceCode để lấy languageCode và ssmlGender
     const parts = voiceCode.split('-');
     
@@ -55,10 +65,15 @@ export class AppComponent implements OnInit {
       this.speechConfig = {
         ...this.speechConfig,
         languageCode,
-        ssmlGender: gender.toUpperCase() as 'MALE' | 'FEMALE' | 'NEUTRAL'
+        ssmlGender: gender.toUpperCase() as 'MALE' | 'FEMALE' | 'NEUTRAL',
+        speakingRate: rate // Thêm tốc độ đọc vào cấu hình
       };
       
-      console.log('Voice selected:', { languageCode, gender: gender.toUpperCase() });
+      console.log('Voice settings updated:', { 
+        languageCode, 
+        gender: gender.toUpperCase(),
+        speakingRate: rate
+      });
     } else {
       console.error('Invalid voice code format:', voiceCode);
     }
