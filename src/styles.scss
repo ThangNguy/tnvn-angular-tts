@@ -10,7 +10,7 @@
 }
 
 :root {
-  /* Colors */
+  /* Colors - Light theme (default) */
   --primary-color: #3498db;
   --secondary-color: #2c3e50;
   --accent-color: #2ecc71;
@@ -20,6 +20,9 @@
   --bg-color: #f8f9fa;
   --light-bg: #ffffff;
   --border-color: #e0e0e0;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --header-bg: var(--primary-color);
   
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -37,6 +40,27 @@
   --transition-speed: 0.3s;
 }
 
+/* Dark theme variables */
+.dark-theme {
+  --primary-color: #2980b9;
+  --secondary-color: #34495e;
+  --accent-color: #27ae60;
+  --warning-color: #c0392b;
+  --text-color: #ecf0f1;
+  --light-text: #f8f9fa;
+  --bg-color: #121212;
+  --light-bg: #1e1e1e;
+  --border-color: #3d3d3d;
+  --card-bg: #2d2d2d;
+  --input-bg: #2d2d2d;
+  --header-bg: #1a1a1a;
+  
+  /* Shadows for dark theme */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
 html, body {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
@@ -44,13 +68,15 @@ html, body {
   color: var(--text-color);
   background-color: var(--bg-color);
   min-height: 100vh;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--spacing-md);
   line-height: 1.2;
-  color: var(--secondary-color);
+  color: inherit;
+  transition: color var(--transition-speed);
 }
 
 h1 { font-size: 2rem; font-weight: 700; }
@@ -67,7 +93,7 @@ h6 { font-size: 0.875rem; font-weight: 500; }
 }
 
 .header {
-  background-color: var(--primary-color);
+  background-color: var(--header-bg);
   color: var(--light-text);
   padding: 10px 20px;
   text-align: center;
@@ -117,8 +143,11 @@ input, textarea, select {
   padding: var(--spacing-sm);
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  background-color: var(--light-bg);
-  transition: border-color var(--transition-speed) ease;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  transition: border-color var(--transition-speed) ease, 
+              background-color var(--transition-speed),
+              color var(--transition-speed);
   
   &:focus {
     outline: none;
@@ -157,11 +186,12 @@ textarea {
 
 /* Cards */
 .card {
-  background-color: var(--light-bg);
+  background-color: var(--card-bg);
   border-radius: 8px;
   box-shadow: var(--shadow-md);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-lg);
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 /* Responsive utilities */
@@ -183,4 +213,29 @@ textarea {
 .success {
   color: var(--accent-color);
   font-weight: bold;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 2px solid var(--light-text);
+  color: var(--light-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
 }

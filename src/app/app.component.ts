@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TtsService } from './services/tts.service';
 import { HistoryService } from './services/history.service';
+import { ThemeService } from './services/theme.service';
 import { SpeechConfig, DEFAULT_SPEECH_CONFIG } from './models/speech-config.model';
 import { createSpeechHistory } from './models/speech-history.model';
 
@@ -18,6 +19,7 @@ interface VoiceSettings {
 })
 export class AppComponent implements OnInit {
   title = 'Text to Speech App';
+  isDarkMode = false;
   
   // Trạng thái cho TTS
   currentText: string = '';
@@ -29,11 +31,17 @@ export class AppComponent implements OnInit {
   
   constructor(
     private _ttsService: TtsService,
-    private _historyService: HistoryService
+    private _historyService: HistoryService,
+    private _themeService: ThemeService
   ) {}
   
   ngOnInit(): void {
     // Khởi tạo với cấu hình mặc định
+    
+    // Theo dõi trạng thái theme
+    this._themeService.isDarkMode.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
   }
   
   /**

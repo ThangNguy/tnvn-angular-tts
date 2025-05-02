@@ -1,7 +1,8 @@
 .app-header {
-  background-color: #2c3e50;
+  background-color: var(--header-bg);
   color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color var(--transition-speed);
 }
 
 .header-container {
@@ -26,7 +27,7 @@
     margin: 0;
     font-size: 1.8rem;
     font-weight: 600;
-    color: #ecf0f1;
+    color: var(--light-text);
   }
   
   .subtitle {
@@ -55,7 +56,7 @@
       }
       
       a {
-        color: #ecf0f1;
+        color: var(--light-text);
         text-decoration: none;
         font-size: 0.95rem;
         padding: 0.5rem;
@@ -63,15 +64,52 @@
         transition: all 0.2s ease;
         
         &:hover {
-          color: #3498db;
+          color: var(--primary-color);
           background-color: rgba(255, 255, 255, 0.1);
         }
         
         &.active {
-          color: #3498db;
+          color: var(--primary-color);
           font-weight: 500;
         }
       }
     }
+  }
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+  background: transparent;
+  border: 2px solid var(--light-text);
+  color: var(--light-text);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 1.5rem;
+  padding: 0;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4);
+  }
+  
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--light-text);
+  }
+  
+  @media (max-width: 768px) {
+    margin: 1rem 0 0;
   }
 }
